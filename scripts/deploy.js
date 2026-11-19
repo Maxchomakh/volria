@@ -15,6 +15,11 @@ async function main() {
 
   console.log(`VolriaToken : ${await token.getAddress()}`);
   console.log(`Offre init. : ${ethers.formatUnits(initialSupply, 18)} VLR`);
+
+  if (network.name === "sepolia") {
+    console.log("\nPour vérifier le contrat sur Etherscan (attendre ~1 minute) :");
+    console.log(`npm run verify:sepolia -- ${await token.getAddress()} ${deployer.address} ${initialSupply}`);
+  }
 }
 
 main().catch((error) => {
