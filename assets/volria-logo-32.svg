@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32">
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset="0.55" stop-color="#3FD0FF"/>
+      <stop offset="1" stop-color="#FF7A1A"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9F8BFF"/>
+      <stop offset="1" stop-color="#3FD0FF"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FF3D00"/>
+      <stop offset="0.5" stop-color="#FF8A1A"/>
+      <stop offset="1" stop-color="#FFD54A"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.5" cy="0.4" r="0.7">
+      <stop offset="0" stop-color="#1A2150"/>
+      <stop offset="1" stop-color="#080C1F"/>
+    </radialGradient>
+  </defs>
+  <!-- pièce -->
+  <circle cx="256" cy="256" r="236" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="236" fill="none" stroke="url(#ring)" stroke-width="14"/>
+  <circle cx="256" cy="256" r="214" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="2"/>
+  <g transform="translate(0 34)">
+  <!-- arêtes du DAG formant un V -->
+  <g stroke="url(#edge)" stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M128 128 L178 214 L222 296 L256 352"/>
+    <path d="M384 128 L334 214 L290 296 L256 352"/>
+    <path d="M96 200 L178 214"/>
+    <path d="M416 200 L334 214"/>
+    <path d="M178 214 L222 160"/>
+    <path d="M334 214 L290 160"/>
+    <path d="M222 296 L290 296" stroke-opacity="0.55" stroke-dasharray="2 14"/>
+  </g>
+  <!-- nœuds -->
+  <g fill="#0B1026" stroke="#C9BDFF" stroke-width="6">
+    <circle cx="128" cy="128" r="15"/>
+    <circle cx="384" cy="128" r="15"/>
+    <circle cx="96" cy="200" r="11"/>
+    <circle cx="416" cy="200" r="11"/>
+    <circle cx="178" cy="214" r="15"/>
+    <circle cx="334" cy="214" r="15"/>
+    <circle cx="222" cy="296" r="13"/>
+    <circle cx="290" cy="296" r="13"/>
+    <circle cx="256" cy="352" r="17"/>
+  </g>
+  <!-- bloc PoW (hexagone) + cadenas (cryptage) -->
+  <g transform="translate(256 196)">
+    <polygon points="0,-62 54,-31 54,31 0,62 -54,31 -54,-31" fill="#11183A" stroke="url(#ring)" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M-17 -6 v-12 a17 17 0 0 1 34 0 v12" fill="none" stroke="#EAF6FF" stroke-width="7" stroke-linecap="round"/>
+    <rect x="-26" y="-6" width="52" height="40" rx="8" fill="#EAF6FF"/>
+    <circle cx="0" cy="9" r="6" fill="#11183A"/>
+    <rect x="-3" y="10" width="6" height="14" rx="2" fill="#11183A"/>
+  </g>
+  </g>
+</svg>

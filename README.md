@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/volria-logo-256.png" alt="Logo Volria" width="160">
+</p>
+
 # Volria
 
 > Projet **éducatif et expérimental** pour étudier la création d’une blockchain compatible avec l’EVM.
@@ -44,6 +48,7 @@ volria/
 │   └── deploy.js            # Déploiement local ou Sepolia
 ├── test/
 │   └── VolriaToken.test.js  # Tests automatisés
+├── assets/                  # Logo Volria (SVG et PNG)
 ├── docs/
 │   ├── specification.md     # Spécification du prototype v0.1
 │   ├── architecture.md      # Composants à étudier
@@ -99,6 +104,15 @@ npm run deploy:local
 npm run deploy:sepolia
 ```
 
+### Vérifier le contrat sur Etherscan
+
+1. Ajoutez `ETHERSCAN_API_KEY` dans `.env`.
+2. Après le déploiement, le script affiche la commande exacte à lancer, par exemple :
+
+```bash
+npm run verify:sepolia -- <ADRESSE_DU_CONTRAT> <ADRESSE_DU_PROPRIETAIRE> <OFFRE_INITIALE_EN_UNITES>
+```
+
 ## Le jeton de test VolriaToken (VLR)
 
 | Propriété | Valeur |
@@ -128,6 +142,7 @@ Ces éléments sont des **pistes de recherche**, pas des fonctions développées
 - [Spécification v0.1](docs/specification.md)
 - [Architecture](docs/architecture.md)
 - [Feuille de route](docs/roadmap.md)
+- [Logo et Etherscan](docs/logo-etherscan.md)
 
 ## Sécurité et avertissement
 
