@@ -4,7 +4,7 @@ const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helper
 
 describe("VolriaToken", function () {
   const INITIAL = ethers.parseUnits("1000000", 18); // 1 million de VLR de test
-  const MAX = ethers.parseUnits("21000000", 18);
+  const MAX = ethers.parseUnits("1000000000", 18);
 
   async function deployFixture() {
     const [owner, alice, bob] = await ethers.getSigners();
@@ -27,7 +27,7 @@ describe("VolriaToken", function () {
       expect(await token.totalSupply()).to.equal(INITIAL);
     });
 
-    it("fixe l'offre maximale à 21 millions", async function () {
+    it("fixe l'offre maximale à 1 milliard", async function () {
       const { token } = await loadFixture(deployFixture);
       expect(await token.cap()).to.equal(MAX);
       expect(await token.MAX_SUPPLY()).to.equal(MAX);
@@ -71,7 +71,7 @@ describe("VolriaToken", function () {
     it("refuse de dépasser l'offre maximale", async function () {
       const { token, owner } = await loadFixture(deployFixture);
       const rest = MAX - INITIAL;
-      await token.mint(owner.address, rest); // atteint exactement 21 M
+      await token.mint(owner.address, rest); // atteint exactement 1 milliard
       await expect(
         token.mint(owner.address, 1n)
       ).to.be.revertedWithCustomError(token, "ERC20ExceededCap");

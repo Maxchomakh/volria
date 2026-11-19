@@ -17,7 +17,7 @@ Volria est un projet éducatif pour étudier les composants d’une blockchain c
 
 Les éléments ci-dessous sont des idées à étudier, pas des fonctions déjà développées :
 
-- Offre maximale envisagée : 21 millions.
+- Offre maximale envisagée : 1 milliard (1 000 000 000 VLR).
 - Frais de transaction éventuellement brûlés.
 - PoW et DAG à tester séparément.
 - Confidentialité à étudier dans une phase ultérieure.

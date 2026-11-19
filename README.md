@@ -39,7 +39,7 @@ Commencer par un prototype **local** ou un **réseau privé de test**, sans arge
 ```text
 volria/
 ├── contracts/
-│   └── VolriaToken.sol      # Jeton de test ERC-20 (offre max 21 M, mint, burn)
+│   └── VolriaToken.sol      # Jeton de test ERC-20 (offre max 1 milliard, mint, burn)
 ├── scripts/
 │   └── deploy.js            # Déploiement local ou Sepolia
 ├── test/
@@ -105,7 +105,7 @@ npm run deploy:sepolia
 | --- | --- |
 | Nom / symbole | Volria / VLR |
 | Décimales | 18 |
-| Offre maximale (paramètre de test) | 21 000 000 VLR |
+| Offre maximale (paramètre de test) | 1 000 000 000 VLR |
 | Création (mint) | Réservée au propriétaire, bloquée au-delà de l’offre max |
 | Destruction (burn) | Chaque détenteur peut détruire ses propres jetons |
 | Base | [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/5.x/) v5 |
@@ -116,7 +116,7 @@ Les tests vérifient : nom et symbole, offre initiale, transferts, refus sans so
 
 - Compatibilité EVM et exécution de contrats.
 - Preuve de travail (PoW) et structure DAG, testées séparément au départ.
-- Offre maximale envisagée de 21 millions.
+- Offre maximale envisagée de 1 milliard (1 000 000 000 VLR).
 - Éventuelle destruction des frais de transaction.
 - Confidentialité des transactions, comme piste de recherche.
 - Staking et KYC : à étudier plus tard.
