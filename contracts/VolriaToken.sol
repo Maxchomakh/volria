@@ -6,19 +6,18 @@ import {ERC20Capped} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20C
 import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-/// @title VolriaToken (VLR) — jeton de TEST éducatif
-/// @notice Contrat simple pour étudier un jeton compatible EVM sur un réseau local
-///         ou un réseau de test. Aucune valeur réelle.
-/// @dev L'offre maximale (1 milliard) est une idée à l'étude, utilisée ici
-///      uniquement comme paramètre de test. Elle peut changer.
+/// @title VolriaToken (VOLRIA)
+/// @notice Jeton ERC-20 du projet éducatif Volria, compatible EVM.
+///         Contrat non audité : aucune promesse de valeur ou de rendement.
+/// @dev L'offre maximale est fixée à 1 milliard et ne peut jamais être augmentée.
 contract VolriaToken is ERC20, ERC20Capped, ERC20Burnable, Ownable {
-    /// @notice Offre maximale de test : 1 milliard de VLR (18 décimales).
+    /// @notice Offre maximale : 1 milliard de VOLRIA (18 décimales), définitive.
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
 
     /// @param initialOwner Adresse qui pourra créer (mint) de nouveaux jetons.
     /// @param initialSupply Quantité créée au déploiement (en unités de base, 18 décimales).
     constructor(address initialOwner, uint256 initialSupply)
-        ERC20("Volria", "VLR")
+        ERC20("Volria", "VOLRIA")
         ERC20Capped(MAX_SUPPLY)
         Ownable(initialOwner)
     {

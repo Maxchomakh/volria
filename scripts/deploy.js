@@ -44,7 +44,7 @@ async function main() {
   await token.waitForDeployment();
 
   console.log(`VolriaToken : ${await token.getAddress()}`);
-  console.log(`Offre init. : ${ethers.formatUnits(initialSupply, 18)} VLR`);
+  console.log(`Offre init. : ${ethers.formatUnits(initialSupply, 18)} VOLRIA`);
 
   if (network.name === "sepolia" || network.name === "mainnet") {
     const verifyScript = network.name === "mainnet" ? "verify:mainnet" : "verify:sepolia";

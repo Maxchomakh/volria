@@ -3,7 +3,7 @@
 ## Phase 1 — Prototype éducatif
 
 - [x] Définir les objectifs et les limites du projet ([spécification v0.1](specification.md)).
-- [x] Écrire un contrat de test simple (`VolriaToken`, VLR) avec des tests automatisés.
+- [x] Écrire un contrat de test simple (`VolriaToken`, VOLRIA) avec des tests automatisés.
 - [x] Réussir un premier transfert de jetons de test sur Sepolia.
 - [ ] Étudier les bases d’une blockchain compatible avec l’EVM.
 - [ ] Lancer un ou plusieurs nœuds en local ou sur un réseau privé de test.
