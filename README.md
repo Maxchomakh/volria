@@ -45,6 +45,8 @@ Commencer par un prototype **local** ou un **réseau privé de test**, sans arge
 volria/
 ├── contracts/
 │   └── VolriaToken.sol      # Jeton de test ERC-20 (offre max 1 milliard, mint, burn)
+├── bot/
+│   └── volria-bot.js        # Bot Telegram (solde VOLRIA + FAQ, FR/EN)
 ├── scripts/
 │   └── deploy.js            # Déploiement local ou Sepolia
 ├── test/
@@ -130,6 +132,24 @@ npm run deploy:mainnet
 
 ```bash
 npm run verify:sepolia -- <ADRESSE_DU_CONTRAT> <ADRESSE_DU_PROPRIETAIRE> <OFFRE_INITIALE_EN_UNITES>
+```
+
+## Bot Telegram
+
+Le dossier `bot/` contient le bot Telegram officiel (français et anglais) :
+
+- envoie une adresse Ethereum (`0x...`) : le bot répond avec son solde VOLRIA ;
+- `/faq` : questions fréquentes (adresse officielle, offre, sécurité, arnaques, liens) ;
+- `/language` : choix de la langue.
+
+Le bot lit seulement la blockchain : il n'utilise aucune clé privée.
+
+1. Créez le bot avec [@BotFather](https://t.me/BotFather) et copiez son jeton.
+2. Ajoutez `TELEGRAM_BOT_TOKEN` (et `MAINNET_RPC_URL`) dans `.env`.
+3. Lancez :
+
+```bash
+npm run bot
 ```
 
 ## Le jeton de test VolriaToken (VOLRIA)
