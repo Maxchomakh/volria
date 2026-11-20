@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 
 describe("VolriaToken", function () {
-  const INITIAL = ethers.parseUnits("1000000", 18); // 1 million de VLR de test
+  const INITIAL = ethers.parseUnits("1000000", 18); // 1 million de VOLRIA de test
   const MAX = ethers.parseUnits("1000000000", 18);
 
   async function deployFixture() {
@@ -17,7 +17,7 @@ describe("VolriaToken", function () {
     it("a le bon nom, symbole et nombre de décimales", async function () {
       const { token } = await loadFixture(deployFixture);
       expect(await token.name()).to.equal("Volria");
-      expect(await token.symbol()).to.equal("VLR");
+      expect(await token.symbol()).to.equal("VOLRIA");
       expect(await token.decimals()).to.equal(18n);
     });
 

@@ -17,7 +17,7 @@
 - [État actuel](#état-actuel)
 - [Structure du dépôt](#structure-du-dépôt)
 - [Démarrage rapide](#démarrage-rapide)
-- [Le jeton de test VolriaToken (VLR)](#le-jeton-de-test-volriatoken-vlr)
+- [Le jeton de test VolriaToken (VOLRIA)](#le-jeton-de-test-volriatoken-volria)
 - [Idées à étudier](#idées-à-étudier)
 - [Documentation](#documentation)
 - [Sécurité et avertissement](#sécurité-et-avertissement)
@@ -31,10 +31,11 @@ Commencer par un prototype **local** ou un **réseau privé de test**, sans arge
 | Élément | État |
 | --- | --- |
 | Spécification v0.1 | ✅ Rédigée |
-| Contrat de test `VolriaToken` (VLR) | ✅ Écrit |
+| Contrat de test `VolriaToken` (VOLRIA) | ✅ Écrit |
 | Tests automatisés du contrat | ✅ Écrits |
 | Script de déploiement (local / Sepolia) | ✅ Écrit |
-| Premier transfert VLR sur Sepolia | ✅ Réussi |
+| Premier transfert sur Sepolia (version de test, symbole VLR) | ✅ Réussi |
+| Contrat de test vérifié sur Etherscan Sepolia | ✅ [`0x4e0D...345e`](https://sepolia.etherscan.io/token/0x4e0D0dC6F13CF29eee47b4a528F0C3987793345e) |
 | Nœuds de test multiples | ⏳ À faire |
 | Études PoW / DAG | ⏳ À faire |
 
@@ -104,6 +105,24 @@ npm run deploy:local
 npm run deploy:sepolia
 ```
 
+### Déployer sur Ethereum mainnet (argent réel)
+
+> ⚠️ Un contrat déployé sur Ethereum est permanent et les frais sont payés en vrai ETH.
+> Utilisez un wallet dédié à Volria, avec seulement l'ETH nécessaire.
+
+1. Remplissez `MAINNET_RPC_URL` et `MAINNET_PRIVATE_KEY` dans `.env`.
+2. Estimez le coût **sans rien déployer** :
+
+```bash
+npm run estimate:mainnet
+```
+
+1. Si le solde suffit et que tout est correct, déployez :
+
+```bash
+npm run deploy:mainnet
+```
+
 ### Vérifier le contrat sur Etherscan
 
 1. Ajoutez `ETHERSCAN_API_KEY` dans `.env`.
@@ -113,13 +132,13 @@ npm run deploy:sepolia
 npm run verify:sepolia -- <ADRESSE_DU_CONTRAT> <ADRESSE_DU_PROPRIETAIRE> <OFFRE_INITIALE_EN_UNITES>
 ```
 
-## Le jeton de test VolriaToken (VLR)
+## Le jeton de test VolriaToken (VOLRIA)
 
 | Propriété | Valeur |
 | --- | --- |
-| Nom / symbole | Volria / VLR |
+| Nom / symbole | Volria / VOLRIA |
 | Décimales | 18 |
-| Offre maximale (paramètre de test) | 1 000 000 000 VLR |
+| Offre maximale (paramètre de test) | 1 000 000 000 VOLRIA |
 | Création (mint) | Réservée au propriétaire, bloquée au-delà de l’offre max |
 | Destruction (burn) | Chaque détenteur peut détruire ses propres jetons |
 | Base | [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/5.x/) v5 |
@@ -130,7 +149,7 @@ Les tests vérifient : nom et symbole, offre initiale, transferts, refus sans so
 
 - Compatibilité EVM et exécution de contrats.
 - Preuve de travail (PoW) et structure DAG, testées séparément au départ.
-- Offre maximale envisagée de 1 milliard (1 000 000 000 VLR).
+- Offre maximale envisagée de 1 milliard (1 000 000 000 VOLRIA).
 - Éventuelle destruction des frais de transaction.
 - Confidentialité des transactions, comme piste de recherche.
 - Staking et KYC : à étudier plus tard.
