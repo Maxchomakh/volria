@@ -10,7 +10,10 @@
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
-    "verify:sepolia": "hardhat verify --network sepolia"
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "estimate:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "deploy:mainnet": "CONFIRM_MAINNET=OUI hardhat run scripts/deploy.js --network mainnet",
+    "verify:mainnet": "hardhat verify --network mainnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

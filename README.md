@@ -104,6 +104,24 @@ npm run deploy:local
 npm run deploy:sepolia
 ```
 
+### Déployer sur Ethereum mainnet (argent réel)
+
+> ⚠️ Un contrat déployé sur Ethereum est permanent et les frais sont payés en vrai ETH.
+> Utilisez un wallet dédié à Volria, avec seulement l'ETH nécessaire.
+
+1. Remplissez `MAINNET_RPC_URL` et `MAINNET_PRIVATE_KEY` dans `.env`.
+2. Estimez le coût **sans rien déployer** :
+
+```bash
+npm run estimate:mainnet
+```
+
+3. Si le solde suffit et que tout est correct, déployez :
+
+```bash
+npm run deploy:mainnet
+```
+
 ### Vérifier le contrat sur Etherscan
 
 1. Ajoutez `ETHERSCAN_API_KEY` dans `.env`.

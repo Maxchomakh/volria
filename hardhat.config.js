@@ -1,7 +1,13 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
-const { SEPOLIA_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const {
+  SEPOLIA_RPC_URL,
+  PRIVATE_KEY,
+  MAINNET_RPC_URL,
+  MAINNET_PRIVATE_KEY,
+  ETHERSCAN_API_KEY,
+} = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -16,6 +22,11 @@ module.exports = {
     // N'utilisez JAMAIS la clé d'un portefeuille qui contient de l'argent réel.
     ...(SEPOLIA_RPC_URL && PRIVATE_KEY
       ? { sepolia: { url: SEPOLIA_RPC_URL, accounts: [PRIVATE_KEY] } }
+      : {}),
+    // Réseau principal Ethereum (ARGENT RÉEL) — utilisé seulement si MAINNET_RPC_URL et MAINNET_PRIVATE_KEY sont remplis.
+    // Utilisez un wallet dédié à Volria, avec seulement l'ETH nécessaire aux frais.
+    ...(MAINNET_RPC_URL && MAINNET_PRIVATE_KEY
+      ? { mainnet: { url: MAINNET_RPC_URL, accounts: [MAINNET_PRIVATE_KEY] } }
       : {}),
   },
   // Vérification du code sur Etherscan (npx hardhat verify ...)
