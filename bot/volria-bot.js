@@ -300,6 +300,9 @@ async function main() {
     process.exit(1);
   }
   const me = await tg("getMe", {});
+  // Si le bot était relié à un autre service (ex. un constructeur de bots), on retire son webhook
+  // pour que ce programme reçoive les messages.
+  await tg("deleteWebhook", { drop_pending_updates: false });
   await setCommands();
   console.log(`Bot démarré : @${me.username}. Appuie sur Ctrl+C pour l'arrêter.`);
 
