@@ -26,11 +26,14 @@ const TEXT = {
     welcome:
       "Bienvenue sur le bot officiel de Volria (VOLRIA) 👋\n\n" +
       "• Envoie une adresse Ethereum (0x...) pour voir son solde VOLRIA.\n" +
+      "• Tape /offre pour voir l'offre de VOLRIA.\n" +
       "• Tape /faq pour les questions fréquentes.\n" +
       "• Tape /langue pour changer de langue.\n\n" +
       "⚠️ Ce bot ne t'écrira jamais en premier et ne te demandera jamais ta clé privée ni ta phrase secrète.",
     menuBalance: "💰 Voir un solde",
     menuFaq: "❓ Questions fréquentes",
+    menuSupply: "📊 Offre de VOLRIA",
+    supply: (current) => `📊 Offre de VOLRIA\n\n• Offre actuelle (jetons existants) : ${current} VOLRIA\n• Offre maximale (fixe, ne peut jamais augmenter) : 1 000 000 000 VOLRIA\n\nVérifier sur Etherscan :\n${ETHERSCAN}`,
     askAddress: "Envoie l'adresse Ethereum à vérifier (elle commence par 0x et fait 42 caractères).",
     badAddress: "Ce n'est pas une adresse Ethereum valide. Elle doit commencer par 0x et contenir 40 caractères (0-9, a-f) après.",
     balance: (addr, amount) => `Solde de ${addr} :\n\n💰 ${amount} VOLRIA\n\nVérifier sur Etherscan :\n${ETHERSCAN}?a=${addr}`,
@@ -45,11 +48,14 @@ const TEXT = {
     welcome:
       "Welcome to the official Volria (VOLRIA) bot 👋\n\n" +
       "• Send an Ethereum address (0x...) to see its VOLRIA balance.\n" +
+      "• Type /supply to see the VOLRIA supply.\n" +
       "• Type /faq for frequently asked questions.\n" +
       "• Type /language to change the language.\n\n" +
       "⚠️ This bot will never message you first and will never ask for your private key or secret phrase.",
     menuBalance: "💰 Check a balance",
     menuFaq: "❓ FAQ",
+    menuSupply: "📊 VOLRIA supply",
+    supply: (current) => `📊 VOLRIA supply\n\n• Current supply (existing tokens): ${current} VOLRIA\n• Maximum supply (fixed, can never increase): 1,000,000,000 VOLRIA\n\nVerify on Etherscan:\n${ETHERSCAN}`,
     askAddress: "Send the Ethereum address to check (it starts with 0x and is 42 characters long).",
     badAddress: "This is not a valid Ethereum address. It must start with 0x followed by 40 characters (0-9, a-f).",
     balance: (addr, amount) => `Balance of ${addr}:\n\n💰 ${amount} VOLRIA\n\nVerify on Etherscan:\n${ETHERSCAN}?a=${addr}`,
@@ -83,8 +89,8 @@ const FAQ = [
     id: "supply",
     q: { fr: "Combien de VOLRIA existent ?", en: "How many VOLRIA exist?" },
     a: {
-      fr: "L'offre maximale est fixée à 1 000 000 000 VOLRIA et ne pourra jamais être augmentée. Le propriétaire du contrat peut créer des jetons jusqu'à cette limite. L'offre actuelle est visible sur Etherscan.",
-      en: "The maximum supply is fixed at 1,000,000,000 VOLRIA and can never be increased. The contract owner can mint tokens up to this limit. The current supply is visible on Etherscan.",
+      fr: "L'offre maximale est fixée à 1 000 000 000 VOLRIA et ne pourra jamais être augmentée. Le propriétaire du contrat peut créer des jetons jusqu'à cette limite. Tape /offre pour voir l'offre actuelle en direct.",
+      en: "The maximum supply is fixed at 1,000,000,000 VOLRIA and can never be increased. The contract owner can mint tokens up to this limit. Type /supply to see the current supply live.",
     },
   },
   {
@@ -162,10 +168,18 @@ function pickLang(code) {
 // Lecture de la blockchain (lecture seule, via JSON-RPC)
 // ---------------------------------------------------------------------------
 async function getVolriaBalance(address) {
+  // balanceOf(address) = 0x70a08231 + adresse sur 32 octets
+  return ethCall("0x70a08231" + address.toLowerCase().replace("0x", "").padStart(64, "0"));
+}
+
+async function getTotalSupply() {
+  // totalSupply() = 0x18160ddd
+  return ethCall("0x18160ddd");
+}
+
+async function ethCall(data) {
   const rpc = process.env.MAINNET_RPC_URL;
   if (!rpc) throw new Error("MAINNET_RPC_URL manquant dans .env");
-  // balanceOf(address) = 0x70a08231 + adresse sur 32 octets
-  const data = "0x70a08231" + address.toLowerCase().replace("0x", "").padStart(64, "0");
   const res = await fetch(rpc, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -203,6 +217,7 @@ function mainMenu(lang) {
   return {
     inline_keyboard: [
       [{ text: t.menuBalance, callback_data: "balance" }],
+      [{ text: t.menuSupply, callback_data: "supply" }],
       [{ text: t.menuFaq, callback_data: "faq" }],
       [{ text: "🇫🇷 Français", callback_data: "lang:fr" }, { text: "🇬🇧 English", callback_data: "lang:en" }],
     ],
@@ -227,6 +242,16 @@ async function replyBalance(chatId, lang, address) {
   }
 }
 
+async function replySupply(chatId, lang) {
+  try {
+    const raw = await getTotalSupply();
+    await send(chatId, TEXT[lang].supply(formatAmount(raw, lang)));
+  } catch (err) {
+    console.error("Erreur RPC :", err.message);
+    await send(chatId, TEXT[lang].rpcError);
+  }
+}
+
 async function handleMessage(msg) {
   const chatId = msg.chat.id;
   const text = (msg.text || "").trim();
@@ -236,6 +261,7 @@ async function handleMessage(msg) {
 
   if (command === "/start" || command === "/menu") return send(chatId, t.welcome, { reply_markup: mainMenu(lang) });
   if (command === "/faq") return send(chatId, t.faqTitle, { reply_markup: faqMenu(lang) });
+  if (command === "/supply" || command === "/offre") return replySupply(chatId, lang);
   if (command === "/langue" || command === "/language" || command === "/lang") {
     return send(chatId, t.chooseLang, {
       reply_markup: { inline_keyboard: [[{ text: "🇫🇷 Français", callback_data: "lang:fr" }, { text: "🇬🇧 English", callback_data: "lang:en" }]] },
@@ -268,6 +294,7 @@ async function handleCallback(cb) {
   const lang = langOf(chatId, cb.from);
   const t = TEXT[lang];
   if (data === "balance") return send(chatId, t.askAddress);
+  if (data === "supply") return replySupply(chatId, lang);
   if (data === "faq") return send(chatId, t.faqTitle, { reply_markup: faqMenu(lang) });
   if (data.startsWith("faq:")) {
     const item = FAQ.find((f) => f.id === data.slice(4));
@@ -284,6 +311,7 @@ async function setCommands() {
     commands: [
       { command: "start", description: "Menu / Main menu" },
       { command: "balance", description: "Solde VOLRIA / VOLRIA balance" },
+      { command: "supply", description: "Offre de VOLRIA / VOLRIA supply" },
       { command: "faq", description: "Questions fréquentes / FAQ" },
       { command: "language", description: "Langue / Language" },
     ],
