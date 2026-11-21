@@ -165,6 +165,7 @@
           <div><dt>Standard</dt><dd>ERC-20</dd></div>
           <div><dt>Decimals</dt><dd>18</dd></div>
           <div><dt>Maximum supply</dt><dd>1,000,000,000</dd></div>
+          <div><dt>Current supply</dt><dd id="current-supply">…</dd></div>
         </dl>
         <div class="actions">
           <button class="btn btn-primary" type="button" id="add-wallet">Add VOLRIA to MetaMask</button>
@@ -254,6 +255,20 @@
   (function () {
     var CONTRACT = "0xE22A0D6e66CEe90F3A5c7C2e043781f4B1f1e6da";
     var msg = document.getElementById("wallet-msg");
+
+    // Offre actuelle lue en direct sur Ethereum (totalSupply), via un RPC public en lecture seule
+    var supplyEl = document.getElementById("current-supply");
+    fetch("https://ethereum-rpc.publicnode.com", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_call", params: [{ to: CONTRACT, data: "0x18160ddd" }, "latest"] })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.result) throw new Error("no result");
+      var whole = BigInt(j.result) / (10n ** 18n);
+      supplyEl.textContent = whole.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }).catch(function () {
+      supplyEl.innerHTML = '<a href="https://etherscan.io/token/' + CONTRACT + '" target="_blank" rel="noopener">See Etherscan</a>';
+    });
 
     document.getElementById("copy-btn").addEventListener("click", function () {
       var btn = this;
