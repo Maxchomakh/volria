@@ -5,37 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VOLRIA</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #050510; color: #e5e7eb; line-height: 1.6; }
-    header, main, footer { max-width: 900px; margin: 0 auto; padding: 24px; }
-    h1, h2 { color: #f8fafc; }
-    .card { background: #0f1430; border: 1px solid #1e2a5a; border-radius: 10px; padding: 16px; margin: 16px 0; }
-    code { word-break: break-all; color: #93c5fd; }
-    .warning { background: #1f1608; border: 1px solid #7c4a03; border-radius: 10px; padding: 16px; }
-    a { color: #93c5fd; }
-    ul { padding-left: 20px; }
+    :root {
+      --bg: #050510;
+      --card: #0d1230;
+      --border: #1e2a5a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --warn-bg: #1f1608;
+      --warn-border: #7c4a03;
+      --warn-text: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 920px; margin: 0 auto; padding: 32px 20px 48px; }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    header img { width: 96px; height: 96px; border-radius: 50%; }
+    header h1 { margin: 0; font-size: 2.2rem; letter-spacing: 1px; }
+    header p { margin: 4px 0 0; color: var(--muted); }
+    h2 { font-size: 1.25rem; margin: 0 0 12px; color: #f8fafc; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .stat {
+      background: #0a0f26;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .stat span { display: block; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat strong { font-size: 1.05rem; }
+    code {
+      display: block;
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: #0a0f26;
+      border-radius: 8px;
+      color: var(--accent);
+      word-break: break-all;
+    }
+    .warning {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+    }
+    .warning h2 { color: var(--warn-text); }
+    ul { padding-left: 20px; margin: 0; }
+    li { margin-bottom: 6px; }
+    a { color: var(--accent); }
+    footer { color: var(--muted); font-size: 0.9rem; text-align: center; padding-top: 16px; }
   </style>
 </head>
 <body>
+<div class="container">
 
-<header>
-  <h1>VOLRIA</h1>
-  <p>Token ERC-20 sur Ethereum, avec code source public.</p>
-</header>
-
-<main>
+  <header>
+    <img src="img/volria-logo-256.png" alt="Logo VOLRIA">
+    <div>
+      <h1>VOLRIA</h1>
+      <p>Token ERC-20 sur Ethereum, avec code source public.</p>
+    </div>
+  </header>
 
   <section class="card">
     <h2>Informations du token</h2>
-    <ul>
-      <li><strong>Nom :</strong> Volria</li>
-      <li><strong>Symbole :</strong> VOLRIA</li>
-      <li><strong>Réseau :</strong> Ethereum mainnet</li>
-      <li><strong>Standard :</strong> ERC-20</li>
-      <li><strong>Décimales :</strong> 18</li>
-      <li><strong>Supply maximum :</strong> 1 000 000 000</li>
-      <li><strong>Adresse officielle du contrat :</strong> <code>0xE22A0D6e66CEe90F3A5c7C2e043781f4B1f1e6da</code></li>
-    </ul>
-    <p>Vérifie toujours cette adresse avant toute interaction avec un token qui porte le nom Volria.</p>
+    <div class="grid">
+      <div class="stat"><span>Nom</span><strong>Volria</strong></div>
+      <div class="stat"><span>Symbole</span><strong>VOLRIA</strong></div>
+      <div class="stat"><span>Réseau</span><strong>Ethereum mainnet</strong></div>
+      <div class="stat"><span>Standard</span><strong>ERC-20</strong></div>
+      <div class="stat"><span>Décimales</span><strong>18</strong></div>
+      <div class="stat"><span>Supply maximum</span><strong>1 000 000 000</strong></div>
+    </div>
+    <p style="margin-top:16px;">Adresse officielle du contrat :</p>
+    <code>0xE22A0D6e66CEe90F3A5c7C2e043781f4B1f1e6da</code>
+    <p style="color:var(--muted); font-size:0.9rem;">Vérifie toujours cette adresse avant toute interaction avec un token qui porte le nom Volria.</p>
   </section>
 
   <section class="warning">
@@ -52,7 +120,7 @@
 
   <section class="card">
     <h2>Feuille de route</h2>
-    <p>Cette feuille de route est indicative. Aucune de ces étapes n'est considérée comme déjà réalisée, sauf mention contraire.</p>
+    <p style="color:var(--muted);">Cette feuille de route est indicative. Aucune étape n'est considérée comme réalisée, sauf mention contraire.</p>
     <ul>
       <li>Spécification du projet (v0.1), documentée sur GitHub.</li>
       <li>Contrat ERC-20 et tests automatisés.</li>
@@ -75,14 +143,13 @@
 
   <section class="card">
     <h2>Contact</h2>
-    <p>Pour toute question officielle : [ajoute ici une adresse de contact liée au domaine du site].</p>
+    <p>Pour toute question officielle : [ajoute ici une adresse liée à ton domaine].</p>
   </section>
 
-</main>
+  <footer>
+    VOLRIA est un projet sous licence MIT. Voir le fichier LICENSE du dépôt.
+  </footer>
 
-<footer>
-  <p>VOLRIA est un projet sous licence MIT. Voir le fichier LICENSE du dépôt.</p>
-</footer>
-
+</div>
 </body>
 </html>
