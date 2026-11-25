@@ -77,6 +77,27 @@
     ul { padding-left: 20px; margin: 0; }
     li { margin-bottom: 6px; }
     a { color: var(--accent); }
+    .rm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; perspective: 1000px; }
+    .rm-card {
+      background: #0a0f26;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--c);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), 0 2px 0 var(--c) inset;
+      transform: rotateX(8deg) rotateY(-6deg);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .rm-card:hover { transform: rotateX(0) rotateY(0) translateY(-4px); box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6); }
+    .rm-q { font-size: 0.8rem; font-weight: 700; letter-spacing: .5px; color: var(--c); margin: 0; }
+    .rm-t { font-size: 1.05rem; font-weight: 600; margin: 4px 0 10px; color: #f8fafc; }
+    .rm-card ul { list-style: none; padding: 0; }
+    .rm-card li { font-size: 0.92rem; color: var(--muted); padding-left: 18px; position: relative; margin-bottom: 6px; }
+    .rm-card li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+    .rm-card li.done::before { background: #34d399; }
+    .rm-card li.done { color: #d1fae5; }
+    .rm-now { font-size: 0.72rem; font-weight: 700; color: #0a0f26; background: var(--c); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+    @media (prefers-reduced-motion: reduce) { .rm-card { transform: none; } .rm-card:hover { transform: none; } }
     footer { color: var(--muted); font-size: 0.9rem; text-align: center; padding-top: 16px; }
   </style>
 </head>
@@ -120,16 +141,57 @@
 
   <section class="card">
     <h2>Feuille de route</h2>
-    <p style="color:var(--muted);">Cette feuille de route est indicative. Aucune étape n'est considérée comme réalisée, sauf mention contraire.</p>
-    <ul>
-      <li>Spécification du projet (v0.1), documentée sur GitHub.</li>
-      <li>Contrat ERC-20 et tests automatisés.</li>
-      <li>Tests sur Sepolia. Contrat déployé sur Ethereum mainnet, non audité.</li>
-      <li>Étude d'un réseau de test privé. Aucun nœud VOLRIA n'est en service.</li>
-      <li>Étude des mécanismes de consensus, séparément.</li>
-      <li>Étude du brûlage de frais et audit externe du contrat. Pas de chaîne propre à VOLRIA à ce jour.</li>
-    </ul>
-    <p>Détails : <a href="roadmap.md">roadmap.md</a></p>
+    <p style="color:var(--muted);">Cette feuille de route est indicative. Aucune étape n'est considérée comme réalisée, sauf mention contraire. Aucun prix, listing ou rendement n'est garanti.</p>
+    <div class="rm-grid">
+      <div class="rm-card" style="--c:#60a5fa">
+        <p class="rm-q">Q4 2026 <span class="rm-now">EN COURS</span></p>
+        <p class="rm-t">Présence et transparence</p>
+        <ul>
+          <li class="done">Contrat sur Ethereum mainnet</li>
+          <li class="done">Code public sous licence MIT</li>
+          <li class="done">Site officiel et contact</li>
+          <li>Répartition du supply sur le site</li>
+          <li>Demande Etherscan en attente</li>
+        </ul>
+      </div>
+      <div class="rm-card" style="--c:#2dd4bf">
+        <p class="rm-q">Q1 2027</p>
+        <p class="rm-t">Sécurité</p>
+        <ul>
+          <li>Authentification à deux facteurs</li>
+          <li>Préparation de l'audit</li>
+          <li>Réponses à Etherscan</li>
+        </ul>
+      </div>
+      <div class="rm-card" style="--c:#a78bfa">
+        <p class="rm-q">Q2 2027</p>
+        <p class="rm-t">Vérification</p>
+        <ul>
+          <li>Relecture indépendante du contrat</li>
+          <li>Publication du rapport d'audit</li>
+          <li>Gestion de la trésorerie</li>
+        </ul>
+      </div>
+      <div class="rm-card" style="--c:#fbbf24">
+        <p class="rm-q">Q3 2027</p>
+        <p class="rm-t">Information</p>
+        <ul>
+          <li>Calendrier de mises à jour</li>
+          <li>Ajout à MetaMask</li>
+          <li>Étude des frais, après audit</li>
+        </ul>
+      </div>
+      <div class="rm-card" style="--c:#f472b6">
+        <p class="rm-q">Q4 2027</p>
+        <p class="rm-t">Cadre et bilan</p>
+        <ul>
+          <li>Obligations légales par pays</li>
+          <li>Bilan annuel</li>
+          <li>Mise à jour de cette feuille</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:14px;">Détails : <a href="roadmap.md">roadmap.md</a></p>
   </section>
 
   <section class="card">
