@@ -70,6 +70,10 @@ Cette feuille de route est indicative. Aucun prix, listing ou rendement n'est ga
 
 Le contrat n'a pas été audité et le créateur détient la majorité du supply. Détails dans [docs/roadmap.md](docs/roadmap.md).
 
+## Sécurité
+
+Fonctionnement du contrat, pouvoirs du propriétaire, précautions sur les autorisations et vérification sur Etherscan : voir [docs/securite.md](docs/securite.md).
+
 ## Avertissement
 
 Ce projet est éducatif. Il n'offre aucune garantie et ne constitue pas un conseil financier. Lis le code avant de l'utiliser.
