@@ -42,6 +42,10 @@ Le déploiement sur un réseau réel coûte de l'argent et est irréversible. Te
 
 Ce projet est éducatif. Il n'offre aucune garantie et ne constitue pas un conseil financier. Lis le code avant de l'utiliser.
 
+## Contact
+
+Adresse officielle : contact@volria.online
+
 ## Licence
 
 Ce projet est distribué sous licence MIT. Voir le fichier LICENSE.
