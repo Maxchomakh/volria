@@ -34,6 +34,22 @@
       margin-bottom: 32px;
     }
     header img { width: 96px; height: 96px; border-radius: 50%; }
+    .logo-3d { perspective: 600px; flex-shrink: 0; }
+    .logo-3d img {
+      display: block;
+      animation: logo-spin 9s ease-in-out infinite;
+      box-shadow: 0 0 28px rgba(96, 165, 250, 0.35);
+      backface-visibility: visible;
+    }
+    @keyframes logo-spin {
+      0%   { transform: rotateY(0deg) rotateX(6deg); }
+      50%  { transform: rotateY(180deg) rotateX(-6deg); }
+      100% { transform: rotateY(360deg) rotateX(6deg); }
+    }
+    #bg-net { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.55; }
+    .container { position: relative; z-index: 1; }
+    .card, .warning { transition: transform .25s ease, box-shadow .25s ease; transform-style: preserve-3d; will-change: transform; }
+    .card.tilting, .warning.tilting { box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55); }
     header h1 { margin: 0; font-size: 2.2rem; letter-spacing: 1px; }
     header p { margin: 4px 0 0; color: var(--muted); }
     h2 { font-size: 1.25rem; margin: 0 0 12px; color: #f8fafc; }
@@ -97,20 +113,90 @@
     .rm-card li.done::before { background: #34d399; }
     .rm-card li.done { color: #d1fae5; }
     .rm-now { font-size: 0.72rem; font-weight: 700; color: #0a0f26; background: var(--c); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
-    @media (prefers-reduced-motion: reduce) { .rm-card { transform: none; } .rm-card:hover { transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .rm-card { transform: none; } .rm-card:hover { transform: none; }
+      .logo-3d img { animation: none; }
+      #bg-net { display: none; }
+    }
+    .hero3d { margin: 0 0 28px; text-align: center; }
+    .stage {
+      height: 340px; perspective: 1100px; cursor: grab; touch-action: pan-y;
+      position: relative; overflow: hidden; border-radius: 18px;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.16), rgba(5,5,16,0) 65%);
+      user-select: none;
+    }
+    .stage.dragging { cursor: grabbing; }
+    .scene { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; }
+    .coin { position: absolute; transform-style: preserve-3d; }
+    .coin .face {
+      position: absolute; width: 170px; height: 170px; left: -85px; top: -85px; border-radius: 50%;
+      background: #0d1230 center/cover no-repeat; backface-visibility: hidden;
+      box-shadow: 0 0 40px rgba(96,165,250,0.45) inset;
+    }
+    .coin .edge {
+      position: absolute; width: 23px; height: 24px; left: -11.5px; top: -12px;
+      background: linear-gradient(90deg, #1d4ed8, #60a5fa, #1d4ed8);
+    }
+    .orbit { position: absolute; transform-style: preserve-3d; }
+    .cube { position: absolute; width: 34px; height: 34px; left: -17px; top: -17px; transform-style: preserve-3d; }
+    .cube i {
+      position: absolute; inset: 0; display: block;
+      border: 1px solid rgba(147,197,253,0.9); background: rgba(30,58,138,0.55);
+      box-shadow: 0 0 10px rgba(96,165,250,0.5) inset;
+    }
+    .link-line {
+      position: absolute; height: 1px; left: 0; top: 0; transform-origin: 0 0;
+      background: linear-gradient(90deg, rgba(96,165,250,0.7), rgba(96,165,250,0.1));
+    }
+    .hero-hint { margin: 10px 0 0; color: var(--muted); font-size: 0.85rem; }
+    @media (max-width: 560px) { .stage { height: 280px; } }
+    .official-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 12px 0; }
+    .official {
+      display: block; text-decoration: none; color: var(--text);
+      background: #0a0f26; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .official:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .official span { display: block; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .official strong { color: var(--accent); overflow-wrap: anywhere; }
+    .official-warn { margin: 8px 0 0; color: var(--warn-text); font-size: 0.95rem; }
+    .wallet-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .btn {
+      font: inherit; font-weight: 600; cursor: pointer;
+      padding: 10px 16px; border-radius: 10px;
+      border: 1px solid var(--border); background: #0a0f26; color: var(--text);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn-primary { background: linear-gradient(135deg, #f6851b, #e2761b); border-color: #f6851b; color: #fff; }
+    .wallet-msg { min-height: 1.4em; margin: 8px 0 0; font-size: 0.9rem; color: var(--muted); }
+    .wallet-msg.ok { color: #34d399; }
+    .wallet-msg.err { color: var(--warn-text); }
     footer { color: var(--muted); font-size: 0.9rem; text-align: center; padding-top: 16px; }
   </style>
 </head>
 <body>
+<canvas id="bg-net" aria-hidden="true"></canvas>
 <div class="container">
 
   <header>
-    <img src="img/volria-logo-256.png" alt="Logo VOLRIA">
+    <div class="logo-3d"><img src="img/volria-logo-256.png" alt="Logo VOLRIA"></div>
     <div>
       <h1>VOLRIA</h1>
       <p>Token ERC-20 sur Ethereum, avec code source public.</p>
     </div>
   </header>
+
+  <section class="hero3d" aria-label="Pièce VOLRIA en 3D, entourée de blocs">
+    <div class="stage" id="stage">
+      <div class="scene" id="scene">
+        <div class="coin" id="coin"></div>
+        <div class="orbit" id="orbit"></div>
+      </div>
+    </div>
+    <p class="hero-hint">Fais glisser pour tourner la pièce · chaque cube représente un bloc de la chaîne Ethereum</p>
+  </section>
 
   <section class="card">
     <h2>Informations du token</h2>
@@ -124,7 +210,12 @@
     </div>
     <p style="margin-top:16px;">Adresse officielle du contrat :</p>
     <code>0xE22A0D6e66CEe90F3A5c7C2e043781f4B1f1e6da</code>
-    <p style="color:var(--muted); font-size:0.9rem;">Vérifie toujours cette adresse avant toute interaction avec un token qui porte le nom Volria.</p>
+    <div class="wallet-actions">
+      <button type="button" class="btn btn-primary" id="add-metamask">🦊 Ajouter VOLRIA à MetaMask</button>
+      <button type="button" class="btn" id="copy-address">Copier l'adresse</button>
+    </div>
+    <p class="wallet-msg" id="wallet-msg" role="status" aria-live="polite"></p>
+    <p style="color:var(--muted); font-size:0.9rem;">Le bouton ajoute seulement le jeton à l'affichage de ton portefeuille : aucune signature, aucun paiement. Vérifie toujours cette adresse avant toute interaction avec un token qui porte le nom Volria.</p>
   </section>
 
   <section class="warning">
@@ -205,6 +296,20 @@
   </section>
 
   <section class="card">
+    <h2>Comptes officiels</h2>
+    <p>Volria n'existe que sur ces comptes :</p>
+    <div class="official-grid">
+      <a class="official" href="https://volria.online"><span>Site</span><strong>volria.online</strong></a>
+      <a class="official" href="https://x.com/volria_fr" rel="noopener" target="_blank"><span>X (Twitter)</span><strong>@volria_fr</strong></a>
+      <a class="official" href="https://www.facebook.com/profile.php?id=61596749170827" rel="noopener" target="_blank"><span>Facebook</span><strong>Volria</strong></a>
+      <a class="official" href="https://zealy.io/cw/volria" rel="noopener" target="_blank"><span>Zealy</span><strong>Quêtes Volria</strong></a>
+      <a class="official" href="https://github.com/Maxchomakh/volria" rel="noopener" target="_blank"><span>GitHub</span><strong>Code source</strong></a>
+      <a class="official" href="mailto:contact@volria.online"><span>E-mail</span><strong>contact@volria.online</strong></a>
+    </div>
+    <p class="official-warn">⚠️ Tout autre compte qui se présente comme Volria est faux. Volria ne t'écrira jamais en privé, ne vend rien et ne te demandera jamais ta phrase secrète.</p>
+  </section>
+
+  <section class="card">
     <h2>Contact</h2>
     <p>Pour toute question officielle : <a href="mailto:contact@volria.online">contact@volria.online</a>.</p>
   </section>
@@ -214,5 +319,198 @@
   </footer>
 
 </div>
+<script>
+  (function () {
+    var TOKEN = {
+      address: "0xE22A0D6e66CEe90F3A5c7C2e043781f4B1f1e6da",
+      symbol: "VOLRIA",
+      decimals: 18,
+      image: "https://volria.online/img/volria-logo-256.png"
+    };
+    var MAINNET = "0x1";
+    var msg = document.getElementById("wallet-msg");
+
+    function say(text, kind) {
+      msg.textContent = text;
+      msg.className = "wallet-msg" + (kind ? " " + kind : "");
+    }
+
+    document.getElementById("add-metamask").addEventListener("click", async function () {
+      var eth = window.ethereum;
+      if (!eth) {
+        say("Aucun portefeuille détecté. Installe MetaMask, ou copie l'adresse ci-dessus et importe le jeton à la main.", "err");
+        return;
+      }
+      try {
+        var chainId = await eth.request({ method: "eth_chainId" });
+        if (chainId !== MAINNET) {
+          say("Passe ton portefeuille sur le réseau Ethereum principal, puis réessaie.", "err");
+          return;
+        }
+        var added = await eth.request({
+          method: "wallet_watchAsset",
+          params: { type: "ERC20", options: TOKEN }
+        });
+        say(added ? "VOLRIA a été ajouté à ton portefeuille." : "Ajout annulé.", added ? "ok" : "");
+      } catch (e) {
+        say(e && e.code === 4001 ? "Ajout annulé." : "Le portefeuille a refusé la demande. Tu peux importer le jeton à la main avec l'adresse.", "err");
+      }
+    });
+
+    document.getElementById("copy-address").addEventListener("click", async function () {
+      try {
+        await navigator.clipboard.writeText(TOKEN.address);
+        say("Adresse copiée.", "ok");
+      } catch (e) {
+        say("Copie impossible : sélectionne l'adresse et copie-la à la main.", "err");
+      }
+    });
+  })();
+
+  // Scène 3D : pièce VOLRIA + blocs en orbite (CSS 3D, sans bibliothèque)
+  (function () {
+    var stage = document.getElementById("stage");
+    var scene = document.getElementById("scene");
+    var coin = document.getElementById("coin");
+    var orbit = document.getElementById("orbit");
+    var logo = "img/volria-logo-256.png";
+    var THICK = 24, R = 85, SEG = 24, i;
+
+    // Faces avant et arrière
+    ["front", "back"].forEach(function (side) {
+      var f = document.createElement("div");
+      f.className = "face";
+      f.style.backgroundImage = "url(" + logo + ")";
+      f.style.transform = side === "front"
+        ? "translateZ(" + THICK / 2 + "px)"
+        : "rotateY(180deg) translateZ(" + THICK / 2 + "px)";
+      coin.appendChild(f);
+    });
+    // Tranche de la pièce
+    for (i = 0; i < SEG; i++) {
+      var e = document.createElement("div");
+      e.className = "edge";
+      e.style.transform = "rotateY(90deg) rotateX(" + (i * 360 / SEG) + "deg) translateZ(" + (R - 1) + "px)";
+      coin.appendChild(e);
+    }
+    // Blocs (cubes) en orbite
+    var N = 8, RAD = 175;
+    var faces = ["rotateY(0deg)", "rotateY(90deg)", "rotateY(180deg)", "rotateY(-90deg)", "rotateX(90deg)", "rotateX(-90deg)"];
+    for (i = 0; i < N; i++) {
+      var a = i * 360 / N;
+      var cube = document.createElement("div");
+      cube.className = "cube";
+      cube.style.transform = "rotateY(" + a + "deg) translateZ(" + RAD + "px) rotateY(" + (-a) + "deg) translateY(" + (Math.sin(i) * 18).toFixed(1) + "px)";
+      faces.forEach(function (t) {
+        var f = document.createElement("i");
+        f.style.transform = t + " translateZ(17px)";
+        cube.appendChild(f);
+      });
+      orbit.appendChild(cube);
+      var line = document.createElement("div");
+      line.className = "link-line";
+      var chord = 2 * RAD * Math.sin(Math.PI / N);
+      line.style.width = chord.toFixed(1) + "px";
+      line.style.transform = "rotateY(" + a + "deg) translateZ(" + RAD + "px) rotateY(" + (90 + 180 / N) + "deg)";
+      orbit.appendChild(line);
+    }
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var rx = -14, ry = 20, vy = reduce ? 0 : 0.25, orbitA = 0;
+    var dragging = false, lx = 0, ly = 0;
+
+    function render() {
+      var k = Math.min(1, stage.clientWidth / 480);
+      scene.style.transform = "scale(" + k.toFixed(3) + ") rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
+      orbit.style.transform = "rotateY(" + orbitA + "deg)";
+    }
+    function loop() {
+      if (!dragging) ry += vy;
+      if (!reduce) orbitA -= 0.35;
+      render();
+      if (!document.hidden) requestAnimationFrame(loop);
+    }
+    stage.addEventListener("pointerdown", function (ev) {
+      dragging = true; lx = ev.clientX; ly = ev.clientY;
+      stage.classList.add("dragging");
+      stage.setPointerCapture(ev.pointerId);
+    });
+    stage.addEventListener("pointermove", function (ev) {
+      if (!dragging) return;
+      ry += (ev.clientX - lx) * 0.5;
+      rx = Math.max(-60, Math.min(60, rx - (ev.clientY - ly) * 0.4));
+      lx = ev.clientX; ly = ev.clientY;
+      if (reduce) render();
+    });
+    function stop() { dragging = false; stage.classList.remove("dragging"); }
+    stage.addEventListener("pointerup", stop);
+    stage.addEventListener("pointercancel", stop);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden && !reduce) requestAnimationFrame(loop); });
+    render();
+    if (!reduce) requestAnimationFrame(loop);
+  })();
+
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    // Cartes qui s'inclinent en 3D au passage de la souris (ordinateur seulement)
+    if (window.matchMedia("(hover: hover)").matches) {
+      document.querySelectorAll(".card, .warning").forEach(function (el) {
+        el.addEventListener("mousemove", function (e) {
+          var r = el.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          el.style.transform = "perspective(900px) rotateX(" + (-y * 5).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg)";
+          el.classList.add("tilting");
+        });
+        el.addEventListener("mouseleave", function () {
+          el.style.transform = "";
+          el.classList.remove("tilting");
+        });
+      });
+    }
+
+    // Fond : réseau de points reliés, comme une blockchain
+    var c = document.getElementById("bg-net");
+    var ctx = c.getContext("2d");
+    var pts = [], w, h, dpr;
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth; h = window.innerHeight;
+      c.width = w * dpr; c.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(70, (w * h) / 22000));
+      pts = [];
+      for (var i = 0; i < n; i++) {
+        pts.push({ x: Math.random() * w, y: Math.random() * h, z: Math.random(), vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25 });
+      }
+    }
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        p.x += p.vx * (0.5 + p.z); p.y += p.vy * (0.5 + p.z);
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        for (var j = i + 1; j < pts.length; j++) {
+          var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+          if (d < 16000) {
+            ctx.strokeStyle = "rgba(96,165,250," + (0.18 * (1 - d / 16000)).toFixed(3) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        ctx.fillStyle = "rgba(147,197,253," + (0.35 + p.z * 0.5).toFixed(2) + ")";
+        ctx.beginPath(); ctx.arc(p.x, p.y, 1 + p.z * 1.8, 0, Math.PI * 2); ctx.fill();
+      }
+      if (!document.hidden) requestAnimationFrame(frame);
+    }
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) requestAnimationFrame(frame); });
+    window.addEventListener("resize", resize);
+    resize();
+    requestAnimationFrame(frame);
+  })();
+</script>
 </body>
 </html>
